@@ -1,6 +1,11 @@
 # Wallpaper Maker
 
-Made by @XelaJr
+Made by [@XelaJr](https://github.com/XelaJr)
+
+### 🌐 [Pruebalo en vivo → xelajr.github.io/WallPaperMaker](https://xelajr.github.io/WallPaperMaker/)
+
+[![Live demo](https://img.shields.io/badge/demo-online-brightgreen?style=for-the-badge&logo=github)](https://xelajr.github.io/WallPaperMaker/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](./LICENSE)
 
 Generador estático de wallpapers personalizables (formas + gradientes) que corre 100 % en el navegador. Pensado para desplegar en **GitHub Pages**: sin servidor, sin SSR.
 
