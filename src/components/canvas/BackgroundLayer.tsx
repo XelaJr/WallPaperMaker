@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import { useId, type FC } from 'react';
 import type { BackgroundConfig } from '@/store/types';
 
 interface Props {
@@ -8,11 +8,12 @@ interface Props {
 }
 
 export const BackgroundLayer: FC<Props> = ({ bg, width, height }) => {
+  const rawId = useId();
+  const id = `wp-bg-grad-${rawId.replace(/[^a-zA-Z0-9_-]/g, '')}`;
   if (bg.mode === 'transparent') return null;
   if (bg.mode === 'solid') {
     return <rect x={0} y={0} width={width} height={height} fill={bg.color} />;
   }
-  // gradiente
   const { stops, angle } = bg.gradient;
   const sorted = [...stops].sort((a, b) => a.position - b.position);
   const a = (angle * Math.PI) / 180;
@@ -25,7 +26,7 @@ export const BackgroundLayer: FC<Props> = ({ bg, width, height }) => {
     <>
       <defs>
         <linearGradient
-          id="wp-bg-grad"
+          id={id}
           gradientUnits="userSpaceOnUse"
           x1={cx - dx}
           y1={cy - dy}
@@ -37,7 +38,7 @@ export const BackgroundLayer: FC<Props> = ({ bg, width, height }) => {
           ))}
         </linearGradient>
       </defs>
-      <rect x={0} y={0} width={width} height={height} fill="url(#wp-bg-grad)" />
+      <rect x={0} y={0} width={width} height={height} fill={`url(#${id})`} />
     </>
   );
 };
@@ -47,16 +48,18 @@ export const Vignette: FC<{ amount: number; width: number; height: number }> = (
   width,
   height,
 }) => {
+  const rawId = useId();
+  const id = `wp-vignette-${rawId.replace(/[^a-zA-Z0-9_-]/g, '')}`;
   if (amount <= 0) return null;
   return (
     <>
       <defs>
-        <radialGradient id="wp-vignette" cx="50%" cy="50%" r="75%">
+        <radialGradient id={id} cx="50%" cy="50%" r="75%">
           <stop offset="55%" stopColor="black" stopOpacity={0} />
           <stop offset="100%" stopColor="black" stopOpacity={amount} />
         </radialGradient>
       </defs>
-      <rect x={0} y={0} width={width} height={height} fill="url(#wp-vignette)" />
+      <rect x={0} y={0} width={width} height={height} fill={`url(#${id})`} />
     </>
   );
 };

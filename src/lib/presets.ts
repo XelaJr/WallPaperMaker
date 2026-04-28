@@ -9,7 +9,7 @@ export interface Preset {
 
 function withColors(stops: { color: string; position: number }[]): WallpaperState['colors'] {
   return {
-    mode: 'linear',
+    mode: 'conic',
     stops: stops.map((s, i) => ({ id: `s${i}`, color: s.color, position: s.position })),
     angle: 90,
     center: { x: 50, y: 50 },

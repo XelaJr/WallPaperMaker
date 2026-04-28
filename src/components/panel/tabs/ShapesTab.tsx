@@ -46,12 +46,12 @@ export function ShapesTab() {
       )}
       <FieldSlider
         label="Espaciado"
-        min={0}
-        max={0.6}
+        min={-0.9}
+        max={1.5}
         step={0.01}
         value={shape.gap}
         onChange={(v) => setStore({ shape: { gap: v } })}
-        format={(v) => `${Math.round(v * 100)}%`}
+        format={(v) => (v < 0 ? `solape ${Math.round(-v * 100)}%` : `${Math.round(v * 100)}%`)}
       />
       {def.supportsCornerRadius && (
         <FieldSlider

@@ -6,15 +6,15 @@ export const AURORA_STATE: WallpaperState = {
   shape: {
     id: 'capsule',
     count: 8,
-    widthRatio: 0.65,
+    widthRatio: 0.95,
     heightRatio: 0.62,
-    gap: 0.18,
+    gap: -0.25,
     cornerRadius: 1,
     heightVariation: { enabled: false, intensity: 0.2 },
     rotation: { enabled: false, angle: 0 },
   },
   colors: {
-    mode: 'linear',
+    mode: 'conic',
     stops: [
       { id: 's1', color: '#0d47ff', position: 0 },
       { id: 's2', color: '#2f6dff', position: 18 },

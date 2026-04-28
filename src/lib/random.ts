@@ -42,7 +42,7 @@ export function randomState(): WallpaperState {
       count: Math.floor(rand(5, 16)),
       widthRatio: rand(0.45, 0.85),
       heightRatio: rand(0.4, 0.85),
-      gap: rand(0.05, 0.3),
+      gap: rand(-0.4, 0.6),
       cornerRadius: rand(0, 1),
       heightVariation: { enabled: Math.random() < 0.4, intensity: rand(0.1, 0.5) },
       rotation: { enabled: false, angle: 0 },

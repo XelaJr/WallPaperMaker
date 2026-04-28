@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import { useId, type FC } from 'react';
 import type { WallpaperState } from '@/store/types';
 import { SHAPE_REGISTRY } from '@/lib/shapes';
 import { GradientDefs } from './GradientDefs';
@@ -21,17 +21,23 @@ function computeSlots(state: WallpaperState, width: number, height: number): Slo
   const def = SHAPE_REGISTRY[shape.id];
   const padX = composition.paddingX * width;
   const innerW = (width - padX * 2) * composition.scale;
-  const startX = (width - innerW) / 2;
 
   const count = Math.max(1, shape.count);
-  const slotW = innerW / count;
-  const itemW = slotW * shape.widthRatio;
+  // Ancho intrínseco del item: derivado del ancho disponible / count.
+  const baseSlot = innerW / count;
+  const itemW = baseSlot * shape.widthRatio;
+  // gap -> distancia entre centros consecutivos = baseSlot * (1 + gap).
+  // gap negativo = solape; gap = 0 las cápsulas tocan sus bordes lógicos del slot.
+  const pitch = baseSlot * (1 + shape.gap);
+  // El row se centra dinámicamente en el viewport.
+  const totalRow = count > 1 ? pitch * (count - 1) + itemW : itemW;
+  const rowStartX = (width - totalRow) / 2;
   let itemH = height * shape.heightRatio;
   if (def.fixedAspectRatio) itemH = itemW * def.fixedAspectRatio;
 
   const slots: SlotGeom[] = [];
   for (let i = 0; i < count; i++) {
-    const cxSlot = startX + slotW * (i + 0.5);
+    const cxSlot = rowStartX + itemW / 2 + pitch * i;
     let h = itemH;
     if (shape.heightVariation.enabled) {
       // patrón ecualizador: una sinusoidal sobre el índice
@@ -64,7 +70,8 @@ export const ShapesLayer: FC<Props> = ({ state, width, height }) => {
   const rowWidth = rowMaxX - rowMinX;
   const rowHeight = rowMaxY - rowMinY;
 
-  const gradId = 'wp-shape-grad';
+  const baseId = useId().replace(/[^a-zA-Z0-9_-]/g, '');
+  const gradId = `wp-shape-grad-${baseId}`;
   const isLinearOrRadial = colors.mode === 'linear' || colors.mode === 'radial';
 
   function fillFor(idx: number): string {
