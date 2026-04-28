@@ -19,9 +19,16 @@ export default function App() {
     document.documentElement.classList.toggle('light', theme === 'light');
   }, [theme]);
 
+  const bgFill =
+    current.background.mode === 'solid'
+      ? current.background.color
+      : current.background.mode === 'gradient'
+        ? current.background.gradient.stops[0]?.color ?? '#000'
+        : '#000';
+
   return (
-    <div className="relative h-full w-full overflow-hidden">
-      <div className="absolute inset-0 flex items-center justify-center bg-black">
+    <div className="relative h-full w-full overflow-hidden" style={{ backgroundColor: bgFill }}>
+      <div className="absolute inset-0 flex items-center justify-center">
         <WallpaperCanvas state={current} />
       </div>
       {panelHidden ? <HiddenHint /> : <FloatingPanel />}

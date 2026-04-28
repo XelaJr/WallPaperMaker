@@ -36,46 +36,48 @@ export function FloatingPanel() {
   return (
     <div
       className="absolute left-1/2 top-0 z-30 -translate-x-1/2"
-      style={{ transform: `translate(calc(-50% + ${pos.x}px), ${pos.y}px)` }}
+      style={{
+        transform: `translate(calc(-50% + ${pos.x}px), calc(env(safe-area-inset-top, 0px) + ${pos.y}px))`,
+      }}
     >
-      <div className="glass w-[min(640px,calc(100vw-2rem))] rounded-2xl border border-border/50 shadow-2xl">
+      <div className="glass w-[min(640px,calc(100vw-0.5rem))] rounded-2xl border border-border/50 shadow-2xl">
         <div
           ref={handleRef}
-          className="flex cursor-grab items-center gap-2 border-b border-border/40 px-3 py-2 active:cursor-grabbing"
+          className="flex cursor-grab items-center gap-1 border-b border-border/40 px-2 py-1.5 active:cursor-grabbing sm:gap-2 sm:px-3 sm:py-2"
         >
-          <GripHorizontal className="h-4 w-4 text-muted-foreground" />
-          <span className="text-xs font-semibold tracking-wide">Wallpaper Maker</span>
-          <div className="ml-auto flex items-center gap-1">
-            <Button size="icon" variant="ghost" onClick={() => replace(randomState())} title="Aleatorio (R)">
+          <GripHorizontal className="h-4 w-4 shrink-0 text-muted-foreground" />
+          <span className="hidden text-xs font-semibold tracking-wide sm:inline">Wallpaper Maker</span>
+          <div className="ml-auto flex items-center gap-0.5 sm:gap-1">
+            <Button size="icon" variant="ghost" onClick={() => replace(randomState())} title="Aleatorio (R)" className="h-8 w-8">
               <Shuffle className="h-4 w-4" />
             </Button>
-            <Button size="icon" variant="ghost" onClick={undo} disabled={past === 0} title="Deshacer (Ctrl+Z)">
+            <Button size="icon" variant="ghost" onClick={undo} disabled={past === 0} title="Deshacer (Ctrl+Z)" className="h-8 w-8">
               <Undo2 className="h-4 w-4" />
             </Button>
-            <Button size="icon" variant="ghost" onClick={redo} disabled={future === 0} title="Rehacer (Ctrl+Y)">
+            <Button size="icon" variant="ghost" onClick={redo} disabled={future === 0} title="Rehacer (Ctrl+Y)" className="h-8 w-8">
               <Redo2 className="h-4 w-4" />
             </Button>
-            <Button size="icon" variant="ghost" onClick={toggleTheme} title="Tema">
+            <Button size="icon" variant="ghost" onClick={toggleTheme} title="Tema" className="h-8 w-8">
               {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </Button>
-            <Button size="icon" variant="ghost" onClick={() => setCollapsed((c) => !c)} title="Plegar">
+            <Button size="icon" variant="ghost" onClick={() => setCollapsed((c) => !c)} title="Plegar" className="h-8 w-8">
               {collapsed ? <ChevronDown className="h-4 w-4" /> : <ChevronUp className="h-4 w-4" />}
             </Button>
-            <Button size="icon" variant="ghost" onClick={togglePanel} title="Ocultar (H)">
+            <Button size="icon" variant="ghost" onClick={togglePanel} title="Ocultar (H)" className="h-8 w-8">
               <EyeOff className="h-4 w-4" />
             </Button>
           </div>
         </div>
-        <div className={cn('overflow-hidden transition-all', collapsed ? 'max-h-0' : 'max-h-[80vh]')}>
-          <div className="max-h-[80vh] overflow-y-auto px-3 py-3">
+        <div className={cn('overflow-hidden transition-all', collapsed ? 'max-h-0' : 'max-h-[78vh]')}>
+          <div className="max-h-[78vh] overflow-y-auto px-2 py-2 sm:px-3 sm:py-3">
             <Tabs defaultValue="shapes">
-              <TabsList className="w-full justify-stretch">
-                <TabsTrigger value="shapes" className="flex-1">Formas</TabsTrigger>
-                <TabsTrigger value="colors" className="flex-1">Colores</TabsTrigger>
-                <TabsTrigger value="background" className="flex-1">Fondo</TabsTrigger>
-                <TabsTrigger value="composition" className="flex-1">Composición</TabsTrigger>
-                <TabsTrigger value="export" className="flex-1">Exportar</TabsTrigger>
-                <TabsTrigger value="presets" className="flex-1">Presets</TabsTrigger>
+              <TabsList className="flex h-9 w-full justify-start gap-0.5 overflow-x-auto whitespace-nowrap p-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                <TabsTrigger value="shapes" className="flex-shrink-0">Formas</TabsTrigger>
+                <TabsTrigger value="colors" className="flex-shrink-0">Colores</TabsTrigger>
+                <TabsTrigger value="background" className="flex-shrink-0">Fondo</TabsTrigger>
+                <TabsTrigger value="composition" className="flex-shrink-0">Composición</TabsTrigger>
+                <TabsTrigger value="export" className="flex-shrink-0">Exportar</TabsTrigger>
+                <TabsTrigger value="presets" className="flex-shrink-0">Presets</TabsTrigger>
               </TabsList>
               <TabsContent value="shapes"><ShapesTab /></TabsContent>
               <TabsContent value="colors"><ColorsTab /></TabsContent>

@@ -31,12 +31,13 @@ export function SavedConfigs() {
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         <Input
           placeholder="Nombre del preset…"
           value={name}
           onChange={(e) => setName(e.target.value)}
           onKeyDown={(e) => { if (e.key === 'Enter') onSave(); }}
+          className="min-w-[140px] flex-1"
         />
         <Button onClick={onSave} size="sm"><Save className="mr-1 h-4 w-4" /> Guardar</Button>
         <Button onClick={onShare} size="sm" variant="outline"><Copy className="mr-1 h-4 w-4" /> Compartir</Button>

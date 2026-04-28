@@ -46,7 +46,8 @@
   }
 
   * { @apply border-border; }
-  html, body, #root { @apply h-full w-full overflow-hidden; }
+  html, body, #root { @apply w-full overflow-hidden; height: 100dvh; }
+  html, body { overscroll-behavior: none; }
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
