@@ -1,5 +1,7 @@
 # Wallpaper Maker
 
+Made by @XelaJr
+
 Generador estático de wallpapers personalizables (formas + gradientes) que corre 100 % en el navegador. Pensado para desplegar en **GitHub Pages**: sin servidor, sin SSR.
 
 ## Stack
