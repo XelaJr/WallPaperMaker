@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Wallpaper Maker</title>
+    <script>
+      // Redirige cualquier ruta a / preservando el hash (técnica spa-github-pages).
+      (function () {
+        var l = window.location;
+        sessionStorage.redirect = l.href;
+      })();
+      // Reemplaza '/WallPaperMaker/' si tu base es distinta.
+      window.location.replace('/WallPaperMaker/' + window.location.hash);
+    </script>
+  </head>
+  <body></body>
+</html>
