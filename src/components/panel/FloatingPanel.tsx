@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useState, useCallback, useEffect } from 'react';
 import { ChevronDown, ChevronUp, GripHorizontal, Sun, Moon, Shuffle, Undo2, Redo2, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -16,8 +16,31 @@ import { cn } from '@/lib/utils';
 
 export function FloatingPanel() {
   const handleRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const [pos, setPos] = useState<{ x: number; y: number }>({ x: 0, y: 16 });
   const [collapsed, setCollapsed] = useState(false);
+
+  function clampPos(p: { x: number; y: number }): { x: number; y: number } {
+    const panel = panelRef.current;
+    if (!panel) return p;
+    const rect = panel.getBoundingClientRect();
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    // Asegurar que al menos 80px del panel queden dentro por cada borde
+    // para que siempre se pueda agarrar el handle.
+    const margin = 60;
+    // El panel está anchored top-center: translate(-50% + x, y).
+    // Por tanto su left = (vw - rect.width)/2 + x; top = y.
+    const baseLeft = (vw - rect.width) / 2;
+    const minX = -(baseLeft + rect.width - margin); // permite ocultar casi todo a la izquierda dejando margin visible
+    const maxX = vw - baseLeft - margin; // idem derecha
+    const minY = 0;
+    const maxY = vh - margin;
+    return {
+      x: Math.max(minX, Math.min(maxX, p.x)),
+      y: Math.max(minY, Math.min(maxY, p.y)),
+    };
+  }
 
   const replace = useWallpaperStore((s) => s.replace);
   const undo = useWallpaperStore((s) => s.undo);
@@ -29,9 +52,16 @@ export function FloatingPanel() {
   const future = useWallpaperStore((s) => s.future.length);
 
   const onDelta = useCallback((d: { x: number; y: number }) => {
-    setPos((p) => ({ x: p.x + d.x, y: p.y + d.y }));
+    setPos((p) => clampPos({ x: p.x + d.x, y: p.y + d.y }));
   }, []);
   usePointerDrag(handleRef, onDelta);
+
+  // Si la ventana se redimensiona o el panel cambia de tamaño, re-clampar.
+  useEffect(() => {
+    function onResize() { setPos((p) => clampPos(p)); }
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
 
   return (
     <div
@@ -40,7 +70,7 @@ export function FloatingPanel() {
         transform: `translate(calc(-50% + ${pos.x}px), calc(env(safe-area-inset-top, 0px) + ${pos.y}px))`,
       }}
     >
-      <div className="glass w-[min(640px,calc(100vw-0.5rem))] rounded-2xl border border-border/50 shadow-2xl">
+      <div ref={panelRef} className="glass w-[min(640px,calc(100vw-0.5rem))] rounded-2xl border border-border/50 shadow-2xl">
         <div
           ref={handleRef}
           className="flex cursor-grab items-center gap-1 border-b border-border/40 px-2 py-1.5 active:cursor-grabbing sm:gap-2 sm:px-3 sm:py-2"
