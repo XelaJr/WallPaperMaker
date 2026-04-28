@@ -1,7 +1,8 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
 import { ChevronDown, ChevronUp, GripHorizontal, Sun, Moon, Shuffle, Undo2, Redo2, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsContent, TabsTrigger } from '@/components/ui/tabs';
+import { ScrollableTabsBar } from './ScrollableTabsBar';
 import { ShapesTab } from './tabs/ShapesTab';
 import { ColorsTab } from './tabs/ColorsTab';
 import { BackgroundTab } from './tabs/BackgroundTab';
@@ -101,14 +102,14 @@ export function FloatingPanel() {
         <div className={cn('overflow-hidden transition-all', collapsed ? 'max-h-0' : 'max-h-[78vh]')}>
           <div className="max-h-[78vh] overflow-y-auto px-2 py-2 sm:px-3 sm:py-3">
             <Tabs defaultValue="shapes">
-              <TabsList className="flex h-9 w-full justify-start gap-0.5 overflow-x-auto whitespace-nowrap p-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              <ScrollableTabsBar>
                 <TabsTrigger value="shapes" className="flex-shrink-0">Formas</TabsTrigger>
                 <TabsTrigger value="colors" className="flex-shrink-0">Colores</TabsTrigger>
                 <TabsTrigger value="background" className="flex-shrink-0">Fondo</TabsTrigger>
                 <TabsTrigger value="composition" className="flex-shrink-0">Composición</TabsTrigger>
                 <TabsTrigger value="export" className="flex-shrink-0">Exportar</TabsTrigger>
                 <TabsTrigger value="presets" className="flex-shrink-0">Presets</TabsTrigger>
-              </TabsList>
+              </ScrollableTabsBar>
               <TabsContent value="shapes"><ShapesTab /></TabsContent>
               <TabsContent value="colors"><ColorsTab /></TabsContent>
               <TabsContent value="background"><BackgroundTab /></TabsContent>
