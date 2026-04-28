@@ -32,6 +32,15 @@ export default function App() {
         <WallpaperCanvas state={current} />
       </div>
       {panelHidden ? <HiddenHint /> : <FloatingPanel />}
+      <a
+        href="https://github.com/XelaJr"
+        target="_blank"
+        rel="noreferrer"
+        className="absolute bottom-2 left-3 z-30 text-[11px] text-white/60 mix-blend-difference transition-colors hover:text-white"
+        style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+      >
+        Made by <span className="font-semibold underline decoration-dotted">@XelaJr</span>
+      </a>
       <Toaster position="bottom-right" theme={theme} richColors />
     </div>
   );
